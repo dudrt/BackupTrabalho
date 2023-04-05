@@ -9,7 +9,7 @@ public class Conexao {
     static BufferedReader bufferedReader = null;
     public static String pegarJson(String endereco){
         try{
-            URL url = new URL("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+endereco+"?unitGroup=metric&include=hours%2Cdays&lang=pt&key=46XJXBY3TA59RPEHB37JL4U7C&contentType=json");
+            URL url = new URL("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+endereco+"?unitGroup=metric&include=hours%2Cdays&lang=pt&key=KEY&contentType=json");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             StringBuilder stringBuilder = new StringBuilder();
             bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
