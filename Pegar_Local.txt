@@ -1,0 +1,68 @@
+No arquivo build.gradle em dependencies{} adicionar: 
+implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+No arquivo AndroidManifest.XML adicionar: 
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+
+
+
+
+
+
+
+//Importar a biblioteca do manifest para puxar as dependencias
+import android.Manifest;
+//Biblioteca para puxar a localização
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+//Biblioteca para verificar as permissoes
+import androidx.core.content.ContextCompat;
+//Biblioteca que verifica se nao foi possivel fazer a checagem da localização
+import com.google.android.gms.tasks.OnFailureListener;
+
+
+
+private static final int REQUEST_LOCATION_PERMISSIONS = 1;
+
+
+
+
+
+//dentro do OnCreate
+
+//Faz o pedido para o usuário fornecer as permissões necessárias
+ FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSIONS);
+        }
+
+//Ainda dentro do OnCreate
+//Pega a ultima localização do dispositivo
+fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                // Obtenha a latitude e longitude da localização
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                // Faça o que quiser com a localização
+                System.out.println("Lat: " + latitude + ", Lng: " + longitude);
+
+            } else {
+                System.out.println("Erro");
+            }
+        });
+//Caso não seja possivel fazer o a requisição da localização, mostra o erro
+        fusedLocationClient.getLastLocation().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Lide com a exceção
+                System.out.println("Erro ao obter os dados: " + e.getMessage());
+            }
+        });
+
+
